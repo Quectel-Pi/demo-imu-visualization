@@ -2,7 +2,7 @@
 
 English | [中文](README_zh.md)
 
-This project is built on the [Quectel Pi M2 smart mainboard](https://www.quectel.com.cn/product/quectel-pi-m2). An MPU6050 is connected to the 40-pin header I2C bus (I2C7, `/dev/i2c-7` on this board); the board samples it at 100 Hz by default and runs a six-axis attitude fusion, while the browser renders a 3D board, an artificial horizon and angle charts in real time. Tilt or rotate the board in your hand and the touchscreen and a PC browser on the same LAN both follow the motion. The UI also provides gyro bias calibration, yaw reset, pause and fullscreen; every reading comes from the real MPU6050.
+This project is built on the [Quectel Pi M2 smart mainboard](https://www.quectel.com.cn/product/quectel-pi-m2). An MPU6050 is connected to the 40-pin header I2C bus (I2C7 on pins 27/28, `/dev/i2c-7` on this board); the board samples it at 100 Hz by default and runs a six-axis attitude fusion, while the browser renders a 3D board, an artificial horizon and angle charts in real time. Tilt or rotate the board in your hand and the touchscreen and a PC browser on the same LAN both follow the motion. The UI also provides gyro bias calibration, yaw reset, pause and fullscreen; every reading comes from the real MPU6050.
 
 ![IMU Visualization running on a monitor, with the physical M2 board and MPU6050 held in the foreground](assets/demo_imu_visualization.png)
 
@@ -34,12 +34,12 @@ This project is built on the [Quectel Pi M2 smart mainboard](https://www.quectel
 | --- | --- | --- |
 | VCC | 3V3 (pin 1) | Must be 3.3 V, never 5 V |
 | GND | GND (pin 6) | Common ground |
-| SDA | GPIO2 / SDA (pin 3) | I2C7 data |
-| SCL | GPIO3 / SCL (pin 5) | I2C7 clock |
-| AD0 | leave open | Address `0x68`; `0x69` when tied to 3V3 |
+| SDA | GPIO3_A1 (pin 27) | I2C7 data |
+| SCL | GPIO3_A0 (pin 28) | I2C7 clock |
+| AD0 | tied to 3V3 on this board | Address `0x69`; `0x68` when left open |
 | INT | not connected | Polling is used instead of interrupts |
 
-The 40-pin header I2C bus enumerates as `/dev/i2c-7` on this board. At startup the program scans every `/dev/i2c-*` bus and both `0x68/0x69`, so another bus or `0x69` needs no configuration change; here the MPU6050 is found on `/dev/i2c-7` at `0x69` (AD0 high) and selected automatically.
+The 40-pin header I2C7 bus (SDA on pin 27, SCL on pin 28) enumerates as `/dev/i2c-7` on this board. Pin 3/5 carry I2C3, so they are not used here. At startup the program scans every `/dev/i2c-*` bus and both `0x68/0x69`, so another bus or `0x69` needs no configuration change; here the MPU6050 is found on `/dev/i2c-7` at `0x69` (AD0 high) and selected automatically.
 
 ### Software
 

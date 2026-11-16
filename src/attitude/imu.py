@@ -3,13 +3,16 @@
 No smbus / pip package is required on the board: the driver opens
 ``/dev/i2c-N`` and uses the I2C_SLAVE ioctl through the standard library.
 
-Wiring (Quectel Pi M2 40-pin header, I2C bus 1):
+Wiring (Quectel Pi M2 40-pin header, I2C7 / /dev/i2c-7):
 
     MPU6050 VCC -> 3.3V (pin 1)
     MPU6050 GND -> GND  (pin 6)
-    MPU6050 SDA -> GPIO2 / SDA (pin 3)
-    MPU6050 SCL -> GPIO3 / SCL (pin 5)
-    AD0 / INT   -> leave open (address 0x68, polling)
+    MPU6050 SDA -> GPIO3_A1 / I2C7_SDA (pin 27)
+    MPU6050 SCL -> GPIO3_A0 / I2C7_SCL (pin 28)
+    AD0         -> 3V3 on this board (0x69); open = 0x68
+    INT         -> not connected (polling)
+
+Pin 3/5 on the header are I2C3, not I2C7.
 
 CLI:
     python3 -m attitude.imu --probe
